@@ -52,7 +52,7 @@ namespace Client
 
         private static async Task Echo(string client, string server)
         {
-            var message = client + Environment.NewLine + server;
+            var message = "Client: " + client + Environment.NewLine + "Server: " + server;
 
             Console.WriteLine(message);
 

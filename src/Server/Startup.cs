@@ -39,7 +39,12 @@ namespace Server
                     var reader = new StreamReader(context.Request.Body);
                     var message = await reader.ReadToEndAsync();
 
-                    logger.LogInformation(message);
+                    logger.LogInformation(
+                        "=============================" + Environment.NewLine +
+                        Environment.NewLine +
+                        message + Environment.NewLine + 
+                        Environment.NewLine +
+                        "=============================");
 
                     await context.Response.WriteAsync("Hello World!");
                 });

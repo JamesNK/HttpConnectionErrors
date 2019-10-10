@@ -78,7 +78,11 @@ namespace Client
                 var response = await httpClient.SendAsync(httpRequestMessage);
                 response.EnsureSuccessStatusCode();
 
-                Console.WriteLine("Success!");
+                Console.WriteLine("Success status code!");
+                if (response.Version != httpRequestMessage.Version)
+                {
+                    Console.WriteLine($"Mismatched response version. Request: {httpRequestMessage.Version}, Response: {response.Version}");
+                }
             }
             catch (Exception ex)
             {

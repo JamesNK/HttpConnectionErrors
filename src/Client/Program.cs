@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Client
 {
@@ -37,8 +39,7 @@ namespace Client
             {
                 foreach (var serverPort in ServerPorts)
                 {
-                    Console.WriteLine($"Client: {clientCall.Key}");
-                    Console.WriteLine($"Server: {serverPort.Key}");
+                    await Echo(clientCall.Key, serverPort.Key);
 
                     await clientCall.Value(serverPort.Value);
 
@@ -47,6 +48,20 @@ namespace Client
                     Console.WriteLine();
                 }
             }
+        }
+
+        private static async Task Echo(string client, string server)
+        {
+            var message = client + Environment.NewLine + server;
+
+            Console.WriteLine(message);
+
+            var httpContext = new ByteArrayContent(Encoding.UTF8.GetBytes(message));
+
+            var httpClient = new HttpClient();
+            var response = await httpClient.PostAsync($"http://localhost:5000/echo", httpContext);
+
+            response.EnsureSuccessStatusCode();
         }
 
         private static async Task DoCall(bool http2, bool tls, int port)

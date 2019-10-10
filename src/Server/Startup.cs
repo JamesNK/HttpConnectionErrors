@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +34,16 @@ namespace Server
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapPost("/echo", async context =>
+                {
+                    var reader = new StreamReader(context.Request.Body);
+                    var message = await reader.ReadToEndAsync();
+
+                    logger.LogInformation(message);
+
+                    await context.Response.WriteAsync("Hello World!");
+                });
+
                 endpoints.MapGet("/{*catchAll}", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
